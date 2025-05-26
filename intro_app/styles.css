@@ -1,0 +1,20 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-section {
+    padding: 1rem;
+}
+
+#canvas {
+    flex: 1;
+    width: 100%;
+    display: block;
+}
