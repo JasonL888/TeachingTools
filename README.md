@@ -14,4 +14,22 @@ Intent is for Instrutor to get each of trainee to introduce themselves and user 
 - click export to save as JSON
     - in future, can import to continue
 
+## Randomizer
+Intent is for Instructor to randomly pick a trainee for response 
+
+![randomizer](./randomizer/images/randomizer.png)
+
+### Usage
+- open [randomizer.html](https://jasonl888.github.io/TeachingTools/randomizer/randomizer.html) in browser
+- upload a csv of attendees
+    - click on "Choose File"
+    - sample format
+    ```csv
+    No, Name
+    1, Jason Lau
+    2, Alice Tan
+    3, John Smith
+    ```
+- click on "Pick Random Attendee"
+
 
