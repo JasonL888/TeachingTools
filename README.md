@@ -1,6 +1,12 @@
 # TeachingTools
 Tools for online teaching
 
+> In case you have security or privacy concerns, rest assured:
+> - tools 
+>   - runs ONLY on your local browser 
+>   - do NOT 
+>       - store the files uploaded to any backend
+>       - track or upload any personal details 
 
 ## IceBreaker Introduction App 
 Intent is for Instrutor to get each of trainee to introduce themselves and user the app to show
