@@ -9,7 +9,10 @@ Tools for online teaching
 >       - track or upload any personal details 
 
 ## IceBreaker Introduction App 
-Intent is for Instrutor to get each of trainee to introduce themselves and user the app to show
+Intent is for 
+- Instructor to get each of trainee to introduce themselves 
+- Instructor types in (on own browser)
+    - web app renders graphically on network graph 
 
 ![intro_app](./intro_app/images/intro_app.png)
 
@@ -21,7 +24,8 @@ Intent is for Instrutor to get each of trainee to introduce themselves and user 
     - in future, can import to continue
 
 ## Randomizer
-Intent is for Instructor to randomly pick a trainee for response 
+Intent is for 
+- Instructor to randomly pick a trainee for response 
 
 ![randomizer](./randomizer/images/randomizer.png)
 
