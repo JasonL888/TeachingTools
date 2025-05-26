@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendee Picker</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
+    .chosen { margin-top: 30px; padding: 20px; background: #f0f8ff; border-radius: 8px; }
+    button { padding: 10px 20px; font-size: 1rem; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>Attendee Picker</h2>
+  <input type="file" id="csvFile" accept=".csv"><br><br>
+  <div id="attendeeSection" style="display:none;">
+    <h3>Attendees</h3>
+    <table id="attendeeTable">
+      <thead>
+        <tr><th>No</th><th>Name</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="pickBtn">Pick Random Attendee</button>
+    <div id="chosen" class="chosen" style="display:none;"></div>
+  </div>
+
+  <script>
+    let attendees = [];
+
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const lines = evt.target.result.split(/\r?\n/);
+        attendees = [];
+        for (let i = 1; i < lines.length; i++) { // skip header
+          const line = lines[i].trim();
+          if (!line) continue;
+          const [no, ...nameParts] = line.split(',');
+          const name = nameParts.join(',').trim();
+          if (no && name) {
+            attendees.push({ no: no.trim(), name });
+          }
+        }
+        if (attendees.length > 0) {
+          renderTable();
+          document.getElementById('attendeeSection').style.display = '';
+          document.getElementById('chosen').style.display = 'none';
+        } else {
+          alert('No valid attendees found in the CSV.');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    function renderTable() {
+      const tbody = document.querySelector('#attendeeTable tbody');
+      tbody.innerHTML = '';
+      attendees.forEach(att => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${att.no}</td><td>${att.name}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('pickBtn').addEventListener('click', function() {
+      if (attendees.length === 0) return;
+      const idx = Math.floor(Math.random() * attendees.length);
+      const chosen = attendees[idx];
+      const chosenDiv = document.getElementById('chosen');
+      chosenDiv.innerHTML = `<h3>🎉 Chosen Attendee 🎉</h3>
+        <p style="font-size:1.25rem;font-weight:bold;">${chosen.no}. ${chosen.name}</p>`;
+      chosenDiv.style.display = '';
+    });
+  </script>
+</body>
+</html>
