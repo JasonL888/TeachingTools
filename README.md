@@ -6,7 +6,7 @@ Tools for online teaching
 Intent is for Instrutor to get each of trainee to introduce themselves and user the app to show
 
 ### Usage
-- open [intro_app.html](./intro_app.html) in browser
+- open [intro_app.html](./intro_app/intro_app.html) in browser
 - type in name, work, interest
     - tool renders in bubble node links
 - click export to save as JSON
