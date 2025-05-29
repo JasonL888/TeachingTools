@@ -45,12 +45,12 @@ Intent is for
 ## Word Brain Teasers
 Intent is for Instructor to flash on screen and ask students to type in chat their guess
 
-![word brainteaser](./word_brainerteasers/word_brainteaser.png)
+![word brainteaser](./word_brainteasers/word_brainteaser.png)
 
 > Credit: https://kids.niehs.nih.gov/games/brainteasers/word-brainteasers
 
 ### Usage
-- open [word_brainteasers](https://jasonl888.github.io/TeachingTools/randomizer/randomizer.html) in browser
+- open [word_brainteasers](https://jasonl888.github.io/TeachingTools/word_brainteasers/index.html) in browser
 - select folder
 - click on reveal or next
 
