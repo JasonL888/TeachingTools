@@ -1,0 +1,13 @@
+body {
+    /* Optional: soft background for contrast */
+    background: #f8fafc;
+}
+
+#image-display {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+#answer-display {
+    min-height: 2em;
+}
