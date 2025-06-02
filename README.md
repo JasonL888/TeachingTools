@@ -54,6 +54,24 @@ Intent is for Instructor to flash on screen and ask students to type in chat the
 - select folder
 - click on reveal or next
 
+## Student List Checker
+Intent is for Instructor to identify which student has not marked attendance or submitted assessment (some LMS just don't provide that feature ... sigh)
+
+![Student List Checker](./list_checker/student_list_checker.png)
+
+### Usage
+- open [student checker](https://jasonl888.github.io/TeachingTools/list_checker/index.html)
+- click to upload list of trainees in CSV (ID, NAME)
+- post the contents from LMS (with list of students that submitted assignment)
+    - Note: the names have to match for proper identification
 
 
+# Misc
+## Testing on Local Machine
+- go to the folder
+- start up http server
+```bash
+python3 -m http.server 8000
+```
+- access on browser 
 
