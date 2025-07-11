@@ -48,8 +48,10 @@ document.getElementById('pickBtn').addEventListener('click', function() {
     return;
   }
   const idx = Math.floor(Math.random() * attendees.length);
-  const chosen = attendees[idx];
+  //const chosen = attendees[idx];
+  const chosen = attendees.splice(idx, 1)[0]; // Remove the chosen attendee from the list
   const chosenDiv = document.getElementById('chosen');
+  renderTable(); // Update the table to reflect the remaining attendees
   chosenDiv.innerHTML = `<span>🎉 <strong>${chosen.no}. ${chosen.name}</strong> 🎉</span>`;
   chosenDiv.classList.remove('d-none', 'alert-warning');
   chosenDiv.classList.add('alert-info');
