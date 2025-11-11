@@ -27,18 +27,41 @@
                 <input type="text" id="interest" placeholder="Interest" class="form-control w-100">
             </div>
             <div class="col-md-4 col-6">
-                <button onclick="addPerson()" class="btn btn-primary w-100">Add</button>
+                <button id="addBtn" class="btn btn-primary w-100">Add</button>
             </div>
             <div class="col-md-4 col-6">
-                <button onclick="exportData()" class="btn btn-success w-100">Export</button>
+                <button id="exportBtn" class="btn btn-success w-100">Export</button>
             </div>
             <div class="col-md-4 col-6">
-                <button onclick="document.getElementById('importFile').click()" class="btn btn-secondary w-100">Import
-                </button>
+                <button id="importBtn" class="btn btn-secondary w-100">Import</button>
                 <input type="file" id="importFile" hidden accept=".json">
             </div>
         </div>
     </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <!-- Table for students -->
+                <div class="table-responsive">
+                    <table id="studentsTable" class="table table-striped table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th data-col="name" role="button" class="sortable">Name <span class="sort-indicator"></span></th>
+                                <th data-col="work" role="button" class="sortable">Work <span class="sort-indicator"></span></th>
+                                <th data-col="interest" role="button" class="sortable">Interest <span class="sort-indicator"></span></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- rows inserted dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <canvas id="canvas"></canvas>
 
     <script src="./intro_app.js"></script>
