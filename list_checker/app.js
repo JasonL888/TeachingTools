@@ -34,7 +34,7 @@ document.getElementById('checkBtn').addEventListener('click', function() {
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   const header = lines[0].split(',');
-  if (header.length < 2 || header[1].trim().toUpperCase() !== 'NAME') {
+  if (header.length < 2 || header[1].trim().toUpperCase() !== 'LEARNER NAME') {
     throw new Error("CSV must have header 'ID,NAME'");
   }
   return lines.slice(1).map(line => {
