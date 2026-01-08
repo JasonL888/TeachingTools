@@ -1,10 +1,10 @@
 let csvNames = [];
 
-document.getElementById('csvFile').addEventListener('change', function(e) {
+document.getElementById('csvFile').addEventListener('change', function (e) {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(evt) {
+  reader.onload = function (evt) {
     try {
       csvNames = parseCSV(evt.target.result);
       document.getElementById('error').textContent = '';
@@ -19,8 +19,13 @@ document.getElementById('csvFile').addEventListener('change', function(e) {
   reader.readAsText(file);
 });
 
-document.getElementById('checkBtn').addEventListener('click', function() {
-  const textContent = document.getElementById('namesBox').value.toLowerCase();
+document.getElementById('checkBtn').addEventListener('click', function () {
+  let textContent = document.getElementById('namesBox').value;
+
+  // Normalize text: add space before numbered lists if missing
+  textContent = textContent.replace(/(\D)(\d+\.)/g, '$1 $2');
+
+  textContent = textContent.toLowerCase();
   const missing = csvNames.filter(nameObj => {
     // For each alias, check if present in text
     return !nameObj.aliases.some(alias => {
