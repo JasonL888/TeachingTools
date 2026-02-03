@@ -66,6 +66,13 @@ Intent is for Instructor to identify which student has not marked attendance or 
     - Note: the names have to match for proper identification
 
 
+## Youtube Video Segment Watcher
+Intent is for instructor to share video with students in class
+
+### Usage
+- open [video segment watcher](https://jasonl888.github.io/TeachingTools/youtube_segment_viewer/index.html) in browser
+- enter the start and end times
+
 # Misc
 ## Testing on Local Machine
 - go to the folder
