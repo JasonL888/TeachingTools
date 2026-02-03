@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Segment Player</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 2rem; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 640px; }
+        .input-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+        button { background: #ff0000; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; }
+        button:hover { background: #cc0000; }
+        #player-container { margin-top: 20px; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>YouTube Segment Player</h2>
+    
+    <div class="input-group">
+        <label>YouTube Video URL or ID</label>
+        <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=XXXXX" value="dQw4w9WgXcQ">
+    </div>
+
+    <div class="controls">
+        <div>
+            <label>Start (seconds)</label>
+            <input type="number" id="startTime" value="10">
+        </div>
+        <div>
+            <label>End (seconds)</label>
+            <input type="number" id="endTime" value="20">
+        </div>
+    </div>
+
+    <button onclick="loadVideo()">Play Segment</button>
+
+    <div id="player-container">
+        <div id="player"></div>
+    </div>
+</div>
+
+<script>
+    let player;
+    let stopCheckInterval;
+
+    // Load the IFrame Player API code asynchronously
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+        // API is ready, but we wait for user input to "load"
+    }
+
+    function extractVideoId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : url;
+    }
+
+    function loadVideo() {
+        const videoId = extractVideoId(document.getElementById('videoUrl').value);
+        const start = parseInt(document.getElementById('startTime').value) || 0;
+        const end = parseInt(document.getElementById('endTime').value);
+
+        if (player) {
+            player.destroy(); // Clear existing player
+        }
+
+        player = new YT.Player('player', {
+            height: '100%',
+            width: '100%',
+            videoId: videoId,
+            playerVars: {
+                'start': start,
+                'autoplay': 1,
+                'modestbranding': 1,
+                'origin': window.location.origin || '*'
+            },
+            events: {
+                'onReady': (event) => onPlayerReady(event, end),
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event, end) {
+        event.target.playVideo();
+        
+        // Clear any old intervals
+        if (stopCheckInterval) clearInterval(stopCheckInterval);
+
+        // Check every 500ms if we've passed the end time
+        stopCheckInterval = setInterval(() => {
+            const currentTime = player.getCurrentTime();
+            if (currentTime >= end) {
+                player.pauseVideo();
+                clearInterval(stopCheckInterval);
+            }
+        }, 500);
+    }
+
+    function onPlayerStateChange(event) {
+        // If video ends naturally before the "end" timestamp
+        if (event.data === YT.PlayerState.ENDED) {
+            clearInterval(stopCheckInterval);
+        }
+    }
+</script>
+
+</body>
+</html>
