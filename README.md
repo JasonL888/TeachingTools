@@ -22,7 +22,6 @@ Intent is for
     - tool renders in bubble node links
 - click export to save as JSON
     - in future, can import to continue
-
 ## Randomizer
 Intent is for 
 - Instructor to randomly pick a trainee for response 
@@ -41,7 +40,34 @@ Intent is for
     3, John Smith
     ```
 - click on "Pick Random Attendee"
+## Mermaid Viewer
+Intent is to generate graphs on-the-fly, using mermaid markdown syntax with option to download
 
+![Mermaid Viewer](./mermaid_viewer/mermaid_viewer.png)
+
+### Usge
+- open [Mermaid Viewer](https://jasonl888.github.io/TeachingTools/mermaid_viewer/index.html) in browser
+- copy-paste diagram in mermaid markdown syntax
+- click on "Render Diagram"
+
+## Student List Checker
+Intent is for Instructor to identify which student has not marked attendance or submitted assessment (some LMS just don't provide that feature ... sigh)
+
+![Student List Checker](./list_checker/student_list_checker.png)
+
+### Usage
+- open [student checker](https://jasonl888.github.io/TeachingTools/list_checker/index.html)
+- click to upload list of trainees in CSV (ID, NAME)
+- post the contents from LMS (with list of students that submitted assignment)
+    - Note: the names have to match for proper identification
+## Youtube Video Segment Watcher
+Intent is for instructor to share video with students in class
+
+![youtube segment watcher](./youtube_segment_viewer/youtube_segment.png)
+
+### Usage
+- open [video segment watcher](https://jasonl888.github.io/TeachingTools/youtube_segment_viewer/index.html) in browser
+- enter the start and end times
 ## Word Brain Teasers
 Intent is for Instructor to flash on screen and ask students to type in chat their guess
 
@@ -54,26 +80,6 @@ Intent is for Instructor to flash on screen and ask students to type in chat the
 - select folder
 - click on reveal or next
 
-## Student List Checker
-Intent is for Instructor to identify which student has not marked attendance or submitted assessment (some LMS just don't provide that feature ... sigh)
-
-![Student List Checker](./list_checker/student_list_checker.png)
-
-### Usage
-- open [student checker](https://jasonl888.github.io/TeachingTools/list_checker/index.html)
-- click to upload list of trainees in CSV (ID, NAME)
-- post the contents from LMS (with list of students that submitted assignment)
-    - Note: the names have to match for proper identification
-
-
-## Youtube Video Segment Watcher
-Intent is for instructor to share video with students in class
-
-![youtube segment watcher](./youtube_segment_viewer/youtube_segment.png)
-
-### Usage
-- open [video segment watcher](https://jasonl888.github.io/TeachingTools/youtube_segment_viewer/index.html) in browser
-- enter the start and end times
 
 # Misc
 ## Testing on Local Machine

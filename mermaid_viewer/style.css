@@ -1,0 +1,84 @@
+/* Container for the diagram output */
+#diagram-container {
+    position: relative;
+    min-height: 80vh; 
+    border: 1px solid #cbd5e1;
+    border-radius: 0.75rem;
+    overflow: auto;
+    background-color: #ffffff;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 40px 40px;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
+/* Editor Styling */
+#mermaid-input {
+    width: 100%;
+    height: 16rem; /* 256px */
+    padding: 1.5rem;
+    display: block;
+    border: none;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1rem;
+    background-color: #1e293b; /* Slate 800 */
+    color: #e0e7ff; /* Indigo 100 */
+    outline: none;
+    transition: all 0.2s;
+}
+
+#mermaid-input:focus {
+    box-shadow: inset 0 0 0 4px rgba(79, 70, 229, 0.2);
+}
+
+/* Mermaid SVG behavior */
+.mermaid {
+    padding: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.mermaid svg {
+    max-width: none !important;
+    height: auto !important;
+}
+
+/* UI Elements */
+.btn-primary {
+    flex: 1;
+    background-color: #4f46e5;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover { background-color: #4338ca; }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-success {
+    flex: 1;
+    background-color: #059669;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-success:hover { background-color: #047857; }
+.btn-success:active { transform: scale(0.98); }
+
+/* Status Tags */
+#status-tag {
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.status-ready { background-color: #e2e8f0; color: #64748b; }
+.status-working { background-color: #fef3c7; color: #d97706; }
+.status-success { background-color: #d1fae5; color: #059669; }
+.status-error { background-color: #fee2e2; color: #dc2626; }
