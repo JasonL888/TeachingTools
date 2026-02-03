@@ -1,6 +1,27 @@
 let player;
 let monitorInterval;
 
+/**
+ * Converts HH:MM:SS or MM:SS to total seconds
+ */
+function timestampToSeconds(timestamp) {
+    if (!timestamp) return 0;
+    const parts = timestamp.split(':').map(Number);
+    let seconds = 0;
+
+    if (parts.length === 3) {
+        // HH:MM:SS
+        seconds = (parts[0] * 3600) + (parts[1] * 60) + parts[2];
+    } else if (parts.length === 2) {
+        // MM:SS
+        seconds = (parts[0] * 60) + parts[1];
+    } else {
+        // Just seconds
+        seconds = parts[0] || 0;
+    }
+    return seconds;
+}
+
 function extractVideoId(url) {
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     const match = url.match(regExp);
@@ -10,7 +31,10 @@ function extractVideoId(url) {
 function loadVideo() {
     const urlInput = document.getElementById('videoUrl').value;
     const videoId = extractVideoId(urlInput);
-    const start = parseInt(document.getElementById('startTime').value) || 0;
+    
+    // Convert the timestamp strings to numbers
+    const start = timestampToSeconds(document.getElementById('startTime').value);
+    const end = timestampToSeconds(document.getElementById('endTime').value);
     
     if (!videoId) {
         alert("Please enter a valid YouTube URL");
@@ -21,7 +45,6 @@ function loadVideo() {
         player.destroy();
     }
 
-    // Creating the player instance
     player = new YT.Player('player', {
         height: '100%',
         width: '100%',
@@ -33,23 +56,21 @@ function loadVideo() {
             'origin': window.location.origin || '*' 
         },
         events: {
-            'onReady': onPlayerReady,
+            'onReady': (event) => onPlayerReady(event, end, start),
             'onStateChange': onPlayerStateChange
         }
     });
 }
 
-function onPlayerReady(event) {
+function onPlayerReady(event, end, start) {
     event.target.playVideo();
-    startMonitoring();
+    startMonitoring(end, start);
 }
 
-function startMonitoring() {
+function startMonitoring(end, start) {
     if (monitorInterval) clearInterval(monitorInterval);
 
     monitorInterval = setInterval(() => {
-        const end = parseInt(document.getElementById('endTime').value);
-        const start = parseInt(document.getElementById('startTime').value) || 0;
         const loop = document.getElementById('loopVideo').checked;
 
         if (player && player.getCurrentTime) {
@@ -69,7 +90,9 @@ function startMonitoring() {
 
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.PLAYING) {
-        startMonitoring();
+        const start = timestampToSeconds(document.getElementById('startTime').value);
+        const end = timestampToSeconds(document.getElementById('endTime').value);
+        startMonitoring(end, start);
     } else {
         clearInterval(monitorInterval);
     }
