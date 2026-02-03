@@ -82,3 +82,13 @@
 .status-working { background-color: #fef3c7; color: #d97706; }
 .status-success { background-color: #d1fae5; color: #059669; }
 .status-error { background-color: #fee2e2; color: #dc2626; }
+
+#sample-selector {
+    min-width: 180px;
+    cursor: pointer;
+    border-color: #cbd5e1;
+}
+
+#sample-selector:hover {
+    border-color: #4f46e5;
+}
