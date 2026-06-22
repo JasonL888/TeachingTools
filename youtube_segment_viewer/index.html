@@ -29,7 +29,10 @@
         </div>
     </div>
 
-    <button onclick="loadVideo()">LOAD & PLAY SEGMENT</button>
+    <div class="button-row">
+        <button onclick="loadVideo()">LOAD & PLAY SEGMENT</button>
+        <button id="copyLinkBtn" onclick="generateLink()">COPY SHAREABLE LINK</button>
+    </div>
 
     <div id="player-container">
         <div id="player"></div>

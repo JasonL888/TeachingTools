@@ -1,5 +1,6 @@
 let player;
 let monitorInterval;
+let pendingAutoLoad = false;
 
 /**
  * Converts HH:MM:SS or MM:SS to total seconds
@@ -27,6 +28,53 @@ function extractVideoId(url) {
     const match = url.match(regExp);
     return (match && match[7].length === 11) ? match[7] : null;
 }
+
+function initFromQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    const url = params.get('url');
+    const start = params.get('start');
+    const end = params.get('end');
+    const loop = params.get('loop');
+
+    if (url) document.getElementById('videoUrl').value = url;
+    if (start) document.getElementById('startTime').value = start;
+    if (end) document.getElementById('endTime').value = end;
+    if (loop) document.getElementById('loopVideo').checked = (loop === '1' || loop === 'true');
+
+    if (url) {
+        pendingAutoLoad = true;
+    }
+}
+
+function onYouTubeIframeAPIReady() {
+    if (pendingAutoLoad) {
+        pendingAutoLoad = false;
+        loadVideo();
+    }
+}
+
+function generateLink() {
+    const url = document.getElementById('videoUrl').value;
+    const start = document.getElementById('startTime').value;
+    const end = document.getElementById('endTime').value;
+    const loop = document.getElementById('loopVideo').checked;
+
+    const params = new URLSearchParams();
+    if (url) params.set('url', url);
+    if (start) params.set('start', start);
+    if (end) params.set('end', end);
+    if (loop) params.set('loop', '1');
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    navigator.clipboard.writeText(shareUrl);
+
+    const btn = document.getElementById('copyLinkBtn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = originalText; }, 1500);
+}
+
+document.addEventListener('DOMContentLoaded', initFromQueryParams);
 
 function loadVideo() {
     const urlInput = document.getElementById('videoUrl').value;

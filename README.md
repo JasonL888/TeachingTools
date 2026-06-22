@@ -68,6 +68,8 @@ Intent is for instructor to share video with students in class
 ### Usage
 - open [video segment watcher](https://jasonl888.github.io/TeachingTools/youtube_segment_viewer/index.html) in browser
 - enter the start and end times
+- click "COPY SHAREABLE LINK" to copy a URL that pre-fills the form and auto-plays the segment (e.g. for posting in class chat), or build one manually with `url`, `start`, `end`, and `loop` query params:
+  `https://jasonl888.github.io/TeachingTools/youtube_segment_viewer/index.html?url=https://www.youtube.com/watch?v=KpOcUrPdx-4&start=00:05&end=00:15&loop=1`
 ## Word Brain Teasers
 Intent is for Instructor to flash on screen and ask students to type in chat their guess
 
