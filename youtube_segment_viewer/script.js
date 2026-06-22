@@ -31,17 +31,22 @@ function extractVideoId(url) {
 
 function initFromQueryParams() {
     const params = new URLSearchParams(window.location.search);
+    const videoId = params.get('v');
     const url = params.get('url');
     const start = params.get('start');
     const end = params.get('end');
     const loop = params.get('loop');
 
-    if (url) document.getElementById('videoUrl').value = url;
+    if (videoId) {
+        document.getElementById('videoUrl').value = `https://www.youtube.com/watch?v=${videoId}`;
+    } else if (url) {
+        document.getElementById('videoUrl').value = url;
+    }
     if (start) document.getElementById('startTime').value = start;
     if (end) document.getElementById('endTime').value = end;
     if (loop) document.getElementById('loopVideo').checked = (loop === '1' || loop === 'true');
 
-    if (url) {
+    if (videoId || url) {
         pendingAutoLoad = true;
     }
 }
@@ -58,9 +63,14 @@ function generateLink() {
     const start = document.getElementById('startTime').value;
     const end = document.getElementById('endTime').value;
     const loop = document.getElementById('loopVideo').checked;
+    const videoId = extractVideoId(url);
 
     const params = new URLSearchParams();
-    if (url) params.set('url', url);
+    if (videoId) {
+        params.set('v', videoId);
+    } else if (url) {
+        params.set('url', url);
+    }
     if (start) params.set('start', start);
     if (end) params.set('end', end);
     if (loop) params.set('loop', '1');
