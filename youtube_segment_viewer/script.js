@@ -84,6 +84,36 @@ function generateLink() {
     setTimeout(() => { btn.textContent = originalText; }, 1500);
 }
 
+/**
+ * Sizes the container so the page fills whichever of width/height is the
+ * binding constraint, while keeping the player at a 16:9 aspect ratio.
+ */
+function fitContainer() {
+    const container = document.querySelector('.container');
+    const playerContainer = document.getElementById('player-container');
+    const bodyPadding = 80; // body padding: 40px top/bottom and left/right
+
+    const availableWidth = window.innerWidth - bodyPadding;
+    const availableHeight = window.innerHeight - bodyPadding;
+
+    // Height taken up by everything in the container except the player.
+    const chromeHeight = container.offsetHeight - playerContainer.offsetHeight;
+    const containerPaddingX = parseFloat(getComputedStyle(container).paddingLeft) +
+        parseFloat(getComputedStyle(container).paddingRight);
+
+    const widthFromHeight = ((availableHeight - chromeHeight) * 16 / 9) + containerPaddingX;
+
+    const maxWidth = Math.max(320, Math.min(availableWidth, widthFromHeight));
+    container.style.maxWidth = `${maxWidth}px`;
+}
+
+window.addEventListener('resize', fitContainer);
+document.addEventListener('DOMContentLoaded', () => {
+    fitContainer();
+    // Re-measure once layout settles (fonts, initial reflow).
+    requestAnimationFrame(fitContainer);
+});
+
 document.addEventListener('DOMContentLoaded', initFromQueryParams);
 
 function loadVideo() {

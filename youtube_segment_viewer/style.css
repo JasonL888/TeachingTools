@@ -1,19 +1,27 @@
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background: #1a1a1a; 
-    color: white; 
-    display: flex; 
-    justify-content: center; 
-    padding: 40px; 
+html, body {
+    height: 100%;
 }
 
-.container { 
-    background: #2d2d2d; 
-    padding: 2rem; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-    width: 100%; 
-    max-width: 700px; 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1a1a1a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.container {
+    background: #2d2d2d;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 700px;
+    box-sizing: border-box;
 }
 
 .input-group { margin-bottom: 1.5rem; }
