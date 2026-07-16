@@ -73,14 +73,16 @@ function showResult(missing, present) {
   let html = '';
   if (missing.length === 0) {
     html += '<div class="alert alert-success">All students are present!</div>';
-  } else {
-    html += `<div class="alert alert-warning"><b>Missing Students (${missing.length}):</b><ul class="mb-0">` +
-      missing.map(name => `<li>${escapeHtml(name)}</li>`).join('') +
-      '</ul></div>';
   }
-  html += `<div class="alert alert-secondary"><b>Present Students (${present.length}):</b><ul class="mb-0">` +
+
+  html += '<div class="row g-3">';
+  html += `<div class="col-12 col-md-6"><div class="alert alert-warning h-100 mb-0"><b>Missing Students (${missing.length}):</b><ul class="mb-0">` +
+    missing.map(name => `<li>${escapeHtml(name)}</li>`).join('') +
+    '</ul></div></div>';
+  html += `<div class="col-12 col-md-6"><div class="alert alert-secondary h-100 mb-0"><b>Present Students (${present.length}):</b><ul class="mb-0">` +
     present.map(name => `<li>${escapeHtml(name)}</li>`).join('') +
-    '</ul></div>';
+    '</ul></div></div>';
+  html += '</div>';
   resultDiv.innerHTML = html;
 }
 
