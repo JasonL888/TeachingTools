@@ -85,7 +85,11 @@ Intent is for Instructor to flash on screen and ask students to type in chat the
 
 # Misc
 ## Testing on Local Machine
-- At root of repo, 
+- At root of repo
+    - activate virtual env
+    ```bash
+    source .venv/bin/activate
+    ```
     - start up http server
     ```bash
     uv run -m http.server 8000
