@@ -26,14 +26,19 @@ document.getElementById('checkBtn').addEventListener('click', function () {
   textContent = textContent.replace(/(\D)(\d+\.)/g, '$1 $2');
 
   textContent = textContent.toLowerCase();
-  const missing = csvNames.filter(nameObj => {
-    // For each alias, check if present in text
-    return !nameObj.aliases.some(alias => {
-      const regex = new RegExp(`\\b${escapeRegex(alias)}\\b`, 'i');
-      return regex.test(textContent);
-    });
-  }).map(nameObj => nameObj.original);
-  showResult(missing);
+  const isPresent = nameObj => nameObj.aliases.some(alias => {
+    const regex = new RegExp(`\\b${escapeRegex(alias)}\\b`, 'i');
+    return regex.test(textContent);
+  });
+  const missing = csvNames.filter(nameObj => !isPresent(nameObj)).map(nameObj => nameObj.original);
+  const present = csvNames.filter(nameObj => isPresent(nameObj)).map(nameObj => nameObj.original);
+  showResult(missing, present);
+});
+
+document.getElementById('clearBtn').addEventListener('click', function () {
+  document.getElementById('namesBox').value = '';
+  document.getElementById('error').textContent = '';
+  document.getElementById('result').innerHTML = '';
 });
 
 function parseCSV(text) {
@@ -58,17 +63,25 @@ function escapeRegex(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function showResult(missing) {
+function showResult(missing, present) {
   const resultDiv = document.getElementById('result');
-  if (missing.length === 0 && csvNames.length > 0) {
-    resultDiv.innerHTML = '<div class="alert alert-success">All students are present!</div>';
-  } else if (missing.length > 0) {
-    resultDiv.innerHTML = '<div class="alert alert-warning"><b>Missing Students:</b><ul class="mb-0">' +
+  if (csvNames.length === 0) {
+    resultDiv.innerHTML = '';
+    return;
+  }
+
+  let html = '';
+  if (missing.length === 0) {
+    html += '<div class="alert alert-success">All students are present!</div>';
+  } else {
+    html += `<div class="alert alert-warning"><b>Missing Students (${missing.length}):</b><ul class="mb-0">` +
       missing.map(name => `<li>${escapeHtml(name)}</li>`).join('') +
       '</ul></div>';
-  } else {
-    resultDiv.innerHTML = '';
   }
+  html += `<div class="alert alert-secondary"><b>Present Students (${present.length}):</b><ul class="mb-0">` +
+    present.map(name => `<li>${escapeHtml(name)}</li>`).join('') +
+    '</ul></div>';
+  resultDiv.innerHTML = html;
 }
 
 function escapeHtml(text) {

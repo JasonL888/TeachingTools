@@ -1,0 +1,104 @@
+:root {
+  --dracula-bg: #282a36;
+  --dracula-current-line: #44475a;
+  --dracula-foreground: #f8f8f2;
+  --dracula-comment: #6272a4;
+  --dracula-purple: #bd93f9;
+  --dracula-green: #50fa7b;
+  --dracula-orange: #ffb86c;
+  --dracula-red: #ff5555;
+  --dracula-cyan: #8be9fd;
+}
+
+body {
+  background-color: var(--dracula-bg);
+  color: var(--dracula-foreground);
+}
+
+.card {
+  background-color: var(--dracula-current-line);
+  color: var(--dracula-foreground);
+  border: 1px solid var(--dracula-comment);
+}
+
+.card-title {
+  color: var(--dracula-purple);
+}
+
+.form-label {
+  color: var(--dracula-foreground);
+}
+
+.form-control {
+  background-color: var(--dracula-bg);
+  color: var(--dracula-foreground);
+  border: 1px solid var(--dracula-comment);
+}
+
+.form-control:focus {
+  background-color: var(--dracula-bg);
+  color: var(--dracula-foreground);
+  border-color: var(--dracula-purple);
+  box-shadow: 0 0 0 0.25rem rgba(189, 147, 249, 0.25);
+}
+
+.form-control::placeholder {
+  color: var(--dracula-comment);
+}
+
+.btn-primary {
+  background-color: var(--dracula-purple);
+  border-color: var(--dracula-purple);
+  color: var(--dracula-bg);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #a97cf5;
+  border-color: #a97cf5;
+  color: var(--dracula-bg);
+}
+
+.btn-primary:disabled {
+  background-color: var(--dracula-comment);
+  border-color: var(--dracula-comment);
+  color: var(--dracula-foreground);
+}
+
+.btn-outline-secondary {
+  color: var(--dracula-cyan);
+  border-color: var(--dracula-cyan);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+  background-color: var(--dracula-cyan);
+  border-color: var(--dracula-cyan);
+  color: var(--dracula-bg);
+}
+
+.text-danger {
+  color: var(--dracula-red) !important;
+}
+
+.alert-success {
+  background-color: rgba(80, 250, 123, 0.15);
+  border-color: var(--dracula-green);
+  color: var(--dracula-green);
+}
+
+.alert-warning {
+  background-color: rgba(255, 184, 108, 0.15);
+  border-color: var(--dracula-orange);
+  color: var(--dracula-orange);
+}
+
+.alert-secondary {
+  background-color: rgba(139, 233, 253, 0.1);
+  border-color: var(--dracula-cyan);
+  color: var(--dracula-cyan);
+}
+
+.alert ul li {
+  color: var(--dracula-foreground);
+}

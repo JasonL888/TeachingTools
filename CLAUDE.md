@@ -4,7 +4,7 @@ A collection of small, standalone browser tools for online teaching, each living
 
 ## Architecture
 - Each tool is plain HTML/CSS/vanilla JS — no build step, no bundler, no framework, no `package.json`.
-- No shared code between tools; each folder is self-contained (its own `index.html`/equivalent, `script.js` or `app.js`, `styles.css`).
+- Each folder is self-contained for its own logic (its own `index.html`/equivalent, `script.js` or `app.js`). The only shared code is `assets/` at the repo root, for things intentionally common to multiple tools (e.g. `assets/styles.css` for shared theming) — reference it with a relative path like `../assets/styles.css` so it resolves correctly both locally and under GitHub Pages.
 - Tools run entirely client-side in the browser: no backend, no data upload, no tracking. Preserve this privacy guarantee — never add server calls or external analytics.
 - Tools are published via GitHub Pages from this repo (see README.md links of the form `https://jasonl888.github.io/TeachingTools/<tool>/...`).
 
