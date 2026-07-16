@@ -1,12 +1,16 @@
+.title-accent {
+    color: var(--dracula-purple);
+}
+
 /* Container for the diagram output */
 #diagram-container {
     position: relative;
-    min-height: 80vh; 
-    border: 1px solid #cbd5e1;
+    height: 70vh;
+    border: 1px solid var(--dracula-comment);
     border-radius: 0.75rem;
     overflow: auto;
-    background-color: #ffffff;
-    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-color: var(--dracula-bg);
+    background-image: radial-gradient(var(--dracula-current-line) 1px, transparent 1px);
     background-size: 40px 40px;
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
@@ -14,20 +18,27 @@
 /* Editor Styling */
 #mermaid-input {
     width: 100%;
-    height: 16rem; /* 256px */
+    flex: 1;
+    height: 70vh;
     padding: 1.5rem;
     display: block;
     border: none;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 1rem;
-    background-color: #1e293b; /* Slate 800 */
-    color: #e0e7ff; /* Indigo 100 */
+    background-color: var(--dracula-bg);
+    color: var(--dracula-foreground);
     outline: none;
     transition: all 0.2s;
+    resize: none;
 }
 
 #mermaid-input:focus {
-    box-shadow: inset 0 0 0 4px rgba(79, 70, 229, 0.2);
+    box-shadow: inset 0 0 0 4px rgba(189, 147, 249, 0.2);
+}
+
+#controls-bar {
+    background-color: var(--dracula-current-line);
+    border-top: 1px solid var(--dracula-comment);
 }
 
 /* Mermaid SVG behavior */
@@ -46,28 +57,28 @@
 /* UI Elements */
 .btn-primary {
     flex: 1;
-    background-color: #4f46e5;
-    color: white;
+    background-color: var(--dracula-purple);
+    color: var(--dracula-bg);
     font-weight: bold;
     padding: 0.75rem;
     border-radius: 0.5rem;
     transition: all 0.2s;
 }
 
-.btn-primary:hover { background-color: #4338ca; }
+.btn-primary:hover { background-color: #a97cf5; }
 .btn-primary:active { transform: scale(0.98); }
 
 .btn-success {
     flex: 1;
-    background-color: #059669;
-    color: white;
+    background-color: var(--dracula-green);
+    color: var(--dracula-bg);
     font-weight: bold;
     padding: 0.75rem;
     border-radius: 0.5rem;
     transition: all 0.2s;
 }
 
-.btn-success:hover { background-color: #047857; }
+.btn-success:hover { background-color: #6dfb95; }
 .btn-success:active { transform: scale(0.98); }
 
 /* Status Tags */
@@ -78,17 +89,24 @@
     border-radius: 0.25rem;
 }
 
-.status-ready { background-color: #e2e8f0; color: #64748b; }
-.status-working { background-color: #fef3c7; color: #d97706; }
-.status-success { background-color: #d1fae5; color: #059669; }
-.status-error { background-color: #fee2e2; color: #dc2626; }
+.status-ready { background-color: var(--dracula-current-line); color: var(--dracula-comment); }
+.status-working { background-color: rgba(255, 184, 108, 0.15); color: var(--dracula-orange); }
+.status-success { background-color: rgba(80, 250, 123, 0.15); color: var(--dracula-green); }
+.status-error { background-color: rgba(255, 85, 85, 0.15); color: var(--dracula-red); }
 
 #sample-selector {
     min-width: 180px;
     cursor: pointer;
-    border-color: #cbd5e1;
+    background-color: var(--dracula-current-line);
+    color: var(--dracula-foreground);
+    border: 1px solid var(--dracula-comment);
+    border-radius: 0.5rem;
+    padding: 0.625rem;
+    font-size: 0.875rem;
 }
 
-#sample-selector:hover {
-    border-color: #4f46e5;
+#sample-selector:hover,
+#sample-selector:focus {
+    border-color: var(--dracula-purple);
+    outline: none;
 }

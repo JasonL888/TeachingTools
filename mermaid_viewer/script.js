@@ -1,7 +1,7 @@
 // Initialize Mermaid with HD settings
 mermaid.initialize({
     startOnLoad: true,
-    theme: 'neutral',
+    theme: 'dark',
     securityLevel: 'loose',
     flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
     sequence: { useMaxWidth: false },
@@ -107,7 +107,7 @@ function downloadPNG() {
     html2canvas(container, {
         scale: 3, // 300% resolution
         useCORS: true,
-        backgroundColor: "#ffffff",
+        backgroundColor: "#282a36",
         width: container.scrollWidth,  // Captures full width even if hidden
         height: container.scrollHeight // Captures full height even if hidden
     }).then(canvas => {
