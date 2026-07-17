@@ -5,7 +5,7 @@
 /* Container for the diagram output */
 #diagram-container {
     position: relative;
-    height: 70vh;
+    height: 100%;
     border: 1px solid var(--dracula-comment);
     border-radius: 0.75rem;
     overflow: auto;
@@ -19,7 +19,7 @@
 #mermaid-input {
     width: 100%;
     flex: 1;
-    height: 70vh;
+    min-height: 0;
     padding: 1.5rem;
     display: block;
     border: none;
