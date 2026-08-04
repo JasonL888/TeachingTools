@@ -13,6 +13,7 @@ const outputArea = document.getElementById('graph-output');
 const statusTag = document.getElementById('status-tag');
 const renderBtn = document.getElementById('render-btn');
 const downloadBtn = document.getElementById('download-btn');
+const clearBtn = document.getElementById('clear-btn');
 
 const sampleSelector = document.getElementById('sample-selector');
 
@@ -119,6 +120,16 @@ function downloadPNG() {
     });
 }
 
+// 3. Clear Text Function
+function clearText() {
+    inputField.value = '';
+    outputArea.removeAttribute('data-processed');
+    outputArea.innerHTML = '';
+    sampleSelector.value = '';
+    updateStatus('ready', 'READY');
+    inputField.focus();
+}
+
 // Helper to change status UI
 function updateStatus(type, text) {
     statusTag.innerText = text;
@@ -128,3 +139,4 @@ function updateStatus(type, text) {
 // Event Listeners
 renderBtn.addEventListener('click', renderDiagram);
 downloadBtn.addEventListener('click', downloadPNG);
+clearBtn.addEventListener('click', clearText);

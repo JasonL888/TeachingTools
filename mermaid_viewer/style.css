@@ -55,9 +55,12 @@
 }
 
 /* UI Elements */
-.btn-primary {
+.btn-primary,
+.btn-success,
+.btn-danger {
     flex: 1;
-    background-color: var(--dracula-purple);
+    height: 2.75rem;
+    white-space: nowrap;
     color: var(--dracula-bg);
     font-weight: bold;
     padding: 0.75rem;
@@ -65,21 +68,17 @@
     transition: all 0.2s;
 }
 
+.btn-primary { background-color: var(--dracula-purple); }
 .btn-primary:hover { background-color: #a97cf5; }
 .btn-primary:active { transform: scale(0.98); }
 
-.btn-success {
-    flex: 1;
-    background-color: var(--dracula-green);
-    color: var(--dracula-bg);
-    font-weight: bold;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-}
-
+.btn-success { background-color: var(--dracula-green); }
 .btn-success:hover { background-color: #6dfb95; }
 .btn-success:active { transform: scale(0.98); }
+
+.btn-danger { background-color: var(--dracula-red); }
+.btn-danger:hover { background-color: #ff7b7b; }
+.btn-danger:active { transform: scale(0.98); }
 
 /* Status Tags */
 #status-tag {
