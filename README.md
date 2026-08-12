@@ -82,6 +82,15 @@ Intent is for Instructor to flash on screen and ask students to type in chat the
 - select folder
 - click on reveal or next
 
+## Disrupt Watermark
+Intent is to help disrupt AI text watermarking by inserting invisible zero-width characters into random words, breaking a watermark detector's token-hash chain without changing how the text looks
+
+### Usage
+- open [Disrupt Watermark](https://jasonl888.github.io/TeachingTools/disrupt_watermark/index.html) in browser
+- paste original text into the left box
+- click "Disrupt" to generate a visually-identical version with invisible characters inserted
+- click "Copy Output" to copy the disrupted text, or "Clear" to reset both boxes
+
 
 # Misc
 ## Testing on Local Machine

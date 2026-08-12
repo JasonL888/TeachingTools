@@ -1,6 +1,6 @@
 # TeachingTools
 
-A collection of small, standalone browser tools for online teaching, each living in its own top-level folder (`intro_app/`, `randomizer/`, `mermaid_viewer/`, `list_checker/`, `youtube_segment_viewer/`, `word_brainteasers/`). One exception: `icebreaker_classmate_guessing/` is a Jupyter notebook tool.
+A collection of small, standalone browser tools for online teaching, each living in its own top-level folder (`intro_app/`, `randomizer/`, `mermaid_viewer/`, `list_checker/`, `youtube_segment_viewer/`, `word_brainteasers/`, `disrupt_watermark/`). One exception: `icebreaker_classmate_guessing/` is a Jupyter notebook tool.
 
 ## Architecture
 - Each tool is plain HTML/CSS/vanilla JS — no build step, no bundler, no framework, no `package.json`.

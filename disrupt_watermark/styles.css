@@ -1,0 +1,21 @@
+textarea.form-control {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  resize: vertical;
+}
+
+.btn-danger {
+  background-color: var(--dracula-red);
+  border-color: var(--dracula-red);
+  color: var(--dracula-bg);
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: #ff7b7b;
+  border-color: #ff7b7b;
+  color: var(--dracula-bg);
+}
+
+#statusLine {
+  text-align: center;
+}
