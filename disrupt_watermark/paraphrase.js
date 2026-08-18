@@ -1,9 +1,3 @@
-import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-
-env.allowLocalModels = false;
-
-const MODEL_ID = 'Xenova/LaMini-Flan-T5-248M';
-
 const inputText = document.getElementById('inputText');
 const outputText = document.getElementById('outputText');
 const statusLine = document.getElementById('statusLine');
@@ -12,9 +6,6 @@ const disruptBtn = document.getElementById('disruptBtn');
 const clearBtn = document.getElementById('clearBtn');
 const modelProgress = document.getElementById('modelProgress');
 const modelProgressBar = document.getElementById('modelProgressBar');
-
-let paraphraser = null;
-let loadingPromise = null;
 
 function showStatus(message) {
   statusLine.textContent = message;
@@ -27,10 +18,41 @@ function setBusy(busy) {
   clearBtn.disabled = busy;
 }
 
+// The model runs in a Web Worker rather than on the main thread. ONNX
+// Runtime's WASM backend executes synchronously and would otherwise block
+// all JS on the page — including our own status updates — for the entire
+// duration of model init and each generation call, making a slow device
+// look frozen instead of busy.
+const worker = new Worker(new URL('./paraphrase.worker.js', import.meta.url), { type: 'module' });
+let nextRequestId = 0;
+const pendingRequests = new Map();
+
+worker.onmessage = (event) => {
+  const { type, id, data, result, message } = event.data;
+  if (type === 'progress') {
+    onProgress(data);
+    return;
+  }
+  const pending = pendingRequests.get(id);
+  if (!pending) return;
+  pendingRequests.delete(id);
+  if (type === 'error') pending.reject(new Error(message));
+  else pending.resolve(result);
+};
+
+function callWorker(type, payload) {
+  return new Promise((resolve, reject) => {
+    const id = nextRequestId++;
+    pendingRequests.set(id, { resolve, reject });
+    worker.postMessage({ type, id, payload });
+  });
+}
+
 const fileProgress = new Map();
 const initiatedWeightFiles = new Set();
 const doneWeightFiles = new Set();
 let downloadStartTime = null;
+let stopInitHeartbeat = null;
 
 function setIndeterminate(indeterminate) {
   modelProgressBar.classList.toggle('progress-bar-striped', indeterminate);
@@ -45,6 +67,18 @@ function formatMB(bytes) {
 function formatDuration(seconds) {
   if (seconds < 60) return `${Math.ceil(seconds)}s`;
   return `${Math.floor(seconds / 60)}m ${Math.round(seconds % 60)}s`;
+}
+
+// Ticks a status message once per second so a long, otherwise-silent wait
+// (WASM model init, a slow sentence generation) still visibly updates
+// instead of looking frozen between the last real event and the next one.
+function startHeartbeat(getMessage) {
+  const start = performance.now();
+  showStatus(getMessage(0));
+  const id = setInterval(() => {
+    showStatus(getMessage(Math.round((performance.now() - start) / 1000)));
+  }, 1000);
+  return () => clearInterval(id);
 }
 
 function onProgress(data) {
@@ -74,10 +108,14 @@ function onProgress(data) {
   }
 
   // All weight files have finished downloading: the remaining wait is the
-  // model compiling in WASM, not a byte-progress-trackable download.
+  // model compiling in WASM, not a byte-progress-trackable download. This
+  // can take anywhere from a few seconds to over a minute depending on the
+  // device, so tick the status every second rather than leaving it static.
   if (initiatedWeightFiles.size > 0 && doneWeightFiles.size === initiatedWeightFiles.size) {
     setIndeterminate(true);
-    showStatus('Initializing model (first run can take a few seconds)...');
+    if (!stopInitHeartbeat) {
+      stopInitHeartbeat = startHeartbeat((s) => `Initializing model... (${s}s)`);
+    }
     return;
   }
 
@@ -108,15 +146,20 @@ function onProgress(data) {
   );
 }
 
-async function getParaphraser() {
-  if (paraphraser) return paraphraser;
-  if (!loadingPromise) {
-    loadingPromise = pipeline('text2text-generation', MODEL_ID, { progress_callback: onProgress });
+let modelLoaded = false;
+let loadingPromise = null;
+
+async function ensureModelLoaded() {
+  if (modelLoaded) return;
+  if (!loadingPromise) loadingPromise = callWorker('load');
+  await loadingPromise;
+  modelLoaded = true;
+  if (stopInitHeartbeat) {
+    stopInitHeartbeat();
+    stopInitHeartbeat = null;
   }
-  paraphraser = await loadingPromise;
   modelProgress.classList.add('d-none');
   setIndeterminate(false);
-  return paraphraser;
 }
 
 const FENCE_RE = /^\s*(```|~~~)/;
@@ -161,13 +204,13 @@ function unmaskMarkdownSpans(text, spans) {
   return text.replace(/MDSPAN(\d+)/g, (full, i) => spans[Number(i)] ?? full);
 }
 
-async function paraphraseSentence(model, sentence) {
+async function paraphraseSentence(sentence) {
   const { masked, spans } = maskMarkdownSpans(sentence);
-  const output = await model(`Paraphrase this sentence: ${masked}`, {
-    max_new_tokens: 128,
-    do_sample: false,
+  const result = await callWorker('generate', {
+    prompt: `Paraphrase this sentence: ${masked}`,
+    options: { max_new_tokens: 128, do_sample: false },
   });
-  return unmaskMarkdownSpans(output[0].generated_text.trim(), spans);
+  return unmaskMarkdownSpans(result.trim(), spans);
 }
 
 // Classifies a line so structural markdown (code fences, horizontal rules,
@@ -207,7 +250,7 @@ paraphraseBtn.addEventListener('click', async () => {
   showStatus('Loading paraphrasing model...');
 
   try {
-    const model = await getParaphraser();
+    await ensureModelLoaded();
 
     // Preserve original line breaks (and blank lines between paragraphs);
     // paraphrase sentence-by-sentence within each prose line, and leave
@@ -232,8 +275,13 @@ paraphraseBtn.addEventListener('click', async () => {
       const paraphrasedSentences = [];
       for (const sentence of sentences) {
         done++;
-        showStatus(`Paraphrasing sentence ${done} of ${totalSentences}...`);
-        paraphrasedSentences.push(await paraphraseSentence(model, sentence));
+        const label = `Paraphrasing sentence ${done} of ${totalSentences}`;
+        const stopHeartbeat = startHeartbeat((s) => (s > 0 ? `${label}... (${s}s)` : `${label}...`));
+        try {
+          paraphrasedSentences.push(await paraphraseSentence(sentence));
+        } finally {
+          stopHeartbeat();
+        }
       }
       paraphrasedLines.push(entry.prefix + paraphrasedSentences.join(' '));
     }
