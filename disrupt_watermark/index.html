@@ -28,16 +28,23 @@
 
         <div id="statusLine" class="alert alert-secondary d-none mb-3"></div>
 
+        <div id="modelProgress" class="progress mb-3 d-none" role="progressbar">
+          <div id="modelProgressBar" class="progress-bar" style="width: 0%"></div>
+        </div>
+
         <div class="row justify-content-center">
           <div class="col-12 col-md-8 d-flex flex-wrap gap-2 justify-content-center">
             <button id="disruptBtn" class="btn btn-primary">Disrupt</button>
+            <button id="paraphraseBtn" class="btn btn-primary">Paraphrase</button>
             <button id="clearBtn" class="btn btn-danger">Clear</button>
             <button id="copyBtn" class="btn btn-outline-secondary">Copy Output</button>
           </div>
         </div>
+        <p class="text-center text-muted small mt-2 mb-0">Paraphrase runs a small language model entirely in your browser (~275&nbsp;MB one-time download, cached after). No text ever leaves your device.</p>
       </div>
     </div>
   </div>
   <script src="./script.js"></script>
+  <script type="module" src="./paraphrase.js"></script>
 </body>
 </html>
