@@ -1,12 +1,24 @@
 // Initialize Mermaid with HD settings
-mermaid.initialize({
-    startOnLoad: true,
-    theme: 'dark',
-    securityLevel: 'loose',
-    flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
-    sequence: { useMaxWidth: false },
-    gantt: { useMaxWidth: false }
-});
+function initMermaid(ganttWidth) {
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        securityLevel: 'loose',
+        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis' },
+        sequence: { useMaxWidth: false },
+        // Gantt sizes itself from its parent's width at render time, which is tiny
+        // (mermaid renders into an off-screen element), so pass the width explicitly
+        gantt: { useMaxWidth: false, useWidth: ganttWidth }
+    });
+}
+
+// Fit gantt charts to the visible preview area (minus the .mermaid padding)
+function fitGanttWidth() {
+    const container = document.getElementById('diagram-container');
+    return Math.max(800, container.clientWidth - 96);
+}
+
+initMermaid(fitGanttWidth());
 
 const inputField = document.getElementById('mermaid-input');
 const outputArea = document.getElementById('graph-output');
@@ -14,6 +26,8 @@ const statusTag = document.getElementById('status-tag');
 const renderBtn = document.getElementById('render-btn');
 const downloadBtn = document.getElementById('download-btn');
 const clearBtn = document.getElementById('clear-btn');
+const toggleCodeBtn = document.getElementById('toggle-code-btn');
+const editorPanel = document.getElementById('editor-panel');
 
 const sampleSelector = document.getElementById('sample-selector');
 
@@ -62,7 +76,32 @@ const samples = {
     Still --> Moving
     Moving --> Still
     Moving --> Crash
-    Crash --> [*]`
+    Crash --> [*]`,
+
+    gantt: `gantt
+    title ABC Bank AI Programme - Project Plan
+    dateFormat YYYY-MM-DD
+    axisFormat %b %Y
+    tickInterval 1month
+
+    section M1 Data Foundation
+    KD1 Customer DB       :crit, kd1, 2027-01-04, 13w
+    KD2 Analytical store  :crit, kd2, after kd1, 13w
+
+    section M2 Reporting and Applications
+    KD3 Dashboard         :crit, kd3, after kd2, 8w
+    KD4 Customer view     :kd4, after kd1, 12w
+
+    section M3 Predictive Models
+    KD5 Fraud model       :kd5, 2027-01-04, 21w
+    KD6 Loan model        :kd6, after kd1, 15w
+    KD8 News model        :kd8, 2027-05-31, 8w
+    KD7 Segmentation      :kd7, after kd2 kd6, 12w
+
+    section M4 Agents and Assistants
+    KD11 Knowledge bot    :kd11, 2027-01-04, 13w
+    KD9 Customer agent    :kd9, after kd11, 17w
+    KD10 Internal bot     :kd10, after kd4 kd9, 12w`
 };
 
 // Handle Selection
@@ -79,12 +118,14 @@ async function renderDiagram() {
     const code = inputField.value;
 
     updateStatus('working', 'RENDERING...');
+    initMermaid(fitGanttWidth());
 
     outputArea.removeAttribute('data-processed');
     outputArea.innerHTML = code;
 
     try {
         await mermaid.run({ nodes: [outputArea] });
+        useNaturalSize(outputArea.querySelector('svg'));
         updateStatus('success', 'SUCCESS');
     } catch (error) {
         updateStatus('error', 'SYNTAX ERROR');
@@ -92,6 +133,16 @@ async function renderDiagram() {
             <strong>Render Error:</strong> Please check your Mermaid syntax.
         </div>`;
     }
+}
+
+// Some diagram types (state, class, ER, ...) emit width="100%" and rely on
+// max-width, which our CSS removes, so they balloon to fill the panel.
+// Pin them to their natural size (the viewBox) instead.
+function useNaturalSize(svg) {
+    const viewBox = svg && svg.viewBox && svg.viewBox.baseVal;
+    if (!viewBox || !viewBox.width) return;
+    svg.style.width = `${viewBox.width}px`;
+    svg.style.maxWidth = 'none';
 }
 
 // 2. High-Res Download Function
@@ -130,6 +181,13 @@ function clearText() {
     inputField.focus();
 }
 
+// 4. Show/hide the code panel; re-render so the diagram fits the new width
+function toggleCode() {
+    const collapsed = editorPanel.classList.toggle('collapsed');
+    toggleCodeBtn.textContent = collapsed ? 'Show code' : 'Hide code';
+    if (outputArea.querySelector('svg')) renderDiagram();
+}
+
 // Helper to change status UI
 function updateStatus(type, text) {
     statusTag.innerText = text;
@@ -140,3 +198,4 @@ function updateStatus(type, text) {
 renderBtn.addEventListener('click', renderDiagram);
 downloadBtn.addEventListener('click', downloadPNG);
 clearBtn.addEventListener('click', clearText);
+toggleCodeBtn.addEventListener('click', toggleCode);
