@@ -57,7 +57,7 @@ Intent is for Instructor to identify which student has not marked attendance or 
 
 ### Usage
 - open [student checker](https://jasonl888.github.io/TeachingTools/list_checker/index.html)
-- click to upload list of trainees in CSV (ID, NAME)
+- click to upload list of trainees in CSV with header `ID, NAME`, `ID, LEARNER NAME`, `NO, NAME` or `NO, LEARNER NAME`
 - post the contents from LMS (with list of students that submitted assignment)
     - Note: the names have to match for proper identification
 ## Youtube Video Segment Watcher

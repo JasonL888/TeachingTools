@@ -43,9 +43,9 @@ document.getElementById('clearBtn').addEventListener('click', function () {
 
 function parseCSV(text) {
   const lines = text.trim().split('\n');
-  const header = lines[0].split(',');
-  if (header.length < 2 || header[1].trim().toUpperCase() !== 'LEARNER NAME') {
-    throw new Error("CSV must have header 'ID,NAME'");
+  const header = lines[0].replace(/^\uFEFF/, '').split(',').map(h => h.trim().toUpperCase());
+  if (header.length < 2 || !['ID', 'NO'].includes(header[0]) || !['NAME', 'LEARNER NAME'].includes(header[1])) {
+    throw new Error("CSV header must be 'ID,NAME', 'ID,LEARNER NAME', 'NO,NAME' or 'NO,LEARNER NAME'");
   }
   return lines.slice(1).map(line => {
     const parts = line.split(',');
